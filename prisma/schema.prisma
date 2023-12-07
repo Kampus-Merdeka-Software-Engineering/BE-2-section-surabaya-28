@@ -1,0 +1,28 @@
+datasource db {
+    provider = "mysql"
+    url = env("DATABASE_URL")
+}
+
+
+model Category {
+    category_id Int @id @default(autoincrement()) 
+    kategory String @db.VarChar(30)
+    news News[]
+}
+
+model News {
+    news_id Int @id @default(autoincrement())
+    category Category @relation(fields: [category_id], references: [category_id])
+    category_id Int 
+    news_date DateTime
+    news_image String @db.VarChar(500)
+    news_title String @db.VarChar(300)
+    news_caption String @db.VarChar(1000)
+    news_content String @db.VarChar(2500)
+}
+model Feedback {
+    nama String @db.VarChar(100)
+    email String @db.VarChar(100) @unique
+    telepon Int
+    masukan String @db.VarChar(1600)
+}
