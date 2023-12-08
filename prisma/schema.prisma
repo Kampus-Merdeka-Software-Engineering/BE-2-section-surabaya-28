@@ -26,6 +26,6 @@ model News {
 model Feedback {
     nama String @db.VarChar(100)
     email String @db.VarChar(100) @unique
-    telepon Int
+    telepon String @db.VarChar(20)
     masukan String @db.VarChar(1600)
 }
