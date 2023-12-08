@@ -52,7 +52,7 @@ app.get('/news/:id', async (req, res) => {
 app.post('/news', async (req, res) => {
     const {news_id, category_id, news_date, news_image, news_title, news_caption, news_content } = req.body;
         try {
-        const newBerita = await News.create({
+        const newBerita = await prisma.news.create({
         data:{
             news_id,
             category_id, 
@@ -64,7 +64,7 @@ app.post('/news', async (req, res) => {
         }
     });
 
-    res.json({ success: true, Feedback: newBerita });
+    res.json({ success: true, news: newBerita });
     } catch (err) {
     res.status(500).json({ success: false, error: err.message });
     }
@@ -74,7 +74,7 @@ app.post('/news', async (req, res) => {
 app.post('/feedback', async (req, res) => {
     const {nama, email, telepon, masukan } = req.body;
     try {
-        const newFeedback = await Feedback.create({
+        const newFeedback = await prisma.feedback.create({
             data:{
                 nama,
                 email,
@@ -87,6 +87,18 @@ app.post('/feedback', async (req, res) => {
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
+})
+
+// endpoint get all feedback
+app.get('/feedback', async (req, res) => {
+    const { keyword, search } = req.query;
+
+    const result = await prisma.feedback.findMany();
+
+    res.json({
+        message: 'Get list all data Feedback is succesfully',
+        data: result
+    })
 })
 
 // endpoint update news by id
