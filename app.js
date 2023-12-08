@@ -50,9 +50,9 @@ app.get('/news/:id', async (req, res) => {
 
 // endpoint post news
 app.post('/news', async (req, res) => {
-    const {news_id, category_id, news_date, news_image, news_title, news_caption, news_content } = req.body
-   
-    const result = await prisma.news.create({
+    const {news_id, category_id, news_date, news_image, news_title, news_caption, news_content } = req.body;
+        try {
+        const newBerita = await News.create({
         data:{
             news_id,
             category_id, 
@@ -62,41 +62,40 @@ app.post('/news', async (req, res) => {
             news_caption, 
             news_content
         }
-    })
+    });
 
-    res.json({
-        message: 'Create data news is successfully',
-        data: result
-    })
+    res.json({ success: true, Feedback: newBerita });
+    } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+    }
 })
 
 // endpoint post feedback
 app.post('/feedback', async (req, res) => {
-    const {nama, email, telepon, masukan } = req.body
-   
-    const result = await prisma.feedback.create({
-        data:{
-            nama,
-            email,
-            telepon,
-            masukan
-        }
-    })
-
-    res.json({
-        message: 'Create feedback is successfully',
-        data: result
-    })
+    const {nama, email, telepon, masukan } = req.body;
+    try {
+        const newFeedback = await Feedback.create({
+            data:{
+                nama,
+                email,
+                telepon,
+                masukan
+            }
+        });
+        
+        res.json({ success: true, Feedback: newFeedback });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
 })
-
 
 // endpoint update news by id
 app.put('/news/:id',async (req, res) => {
-    const NewsId = parseInt(req.params.id);
+    const newsId = parseInt(req.params.id);
     const { category_id, news_date, news_image, news_title, news_caption, news_content } = req.body;
     const updatedNews = await prisma.news.update({
         where: {
-            id: NewsIdewsId,
+            news_id: newsId,
         },
         data: {
             category_id, 
@@ -110,7 +109,7 @@ app.put('/news/:id',async (req, res) => {
     });
 
     res.json({
-        message: `Data news with ID ${NewsId} has been successfully updated`,
+        message: `Data news with ID ${newsId} has been successfully updated`,
         data: updatedNews,
     });
 })
@@ -126,7 +125,7 @@ app.delete('/news/:id', async (req, res) => {
             },
         });
     res.json({
-        message: `delete data news by id ${NewsId} is successfully`,
+        message: `delete data news by id ${newsId} is successfully`,
         data: {}
     })
 })
