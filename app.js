@@ -48,28 +48,6 @@ app.get('/news/:id', async (req, res) => {
     }
 });
 
-// endpoint post news
-app.post('/news', async (req, res) => {
-    const {news_id, category_id, news_date, news_image, news_title, news_caption, news_content } = req.body;
-        try {
-        const newBerita = await prisma.news.create({
-        data:{
-            news_id,
-            category_id, 
-            news_date, 
-            news_image, 
-            news_title, 
-            news_caption, 
-            news_content
-        }
-    });
-
-    res.json({ success: true, news: newBerita });
-    } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-    }
-})
-
 // endpoint post feedback
 app.post('/feedback', async (req, res) => {
     const {nama, email, telepon, masukan } = req.body;
@@ -101,46 +79,6 @@ app.get('/feedback', async (req, res) => {
     })
 })
 
-// endpoint update news by id
-app.put('/news/:id',async (req, res) => {
-    const newsId = parseInt(req.params.id);
-    const { category_id, news_date, news_image, news_title, news_caption, news_content } = req.body;
-    const updatedNews = await prisma.news.update({
-        where: {
-            news_id: newsId,
-        },
-        data: {
-            category_id, 
-            news_date, 
-            news_image, 
-            news_title, 
-            news_caption, 
-            news_content,
-            updated_at: new Date().toISOString() // Menggunakan waktu saat ini sebagai updated_at
-        },
-    });
-
-    res.json({
-        message: `Data news with ID ${newsId} has been successfully updated`,
-        data: updatedNews,
-    });
-})
-
-// endpoint delete customers by id
-app.delete('/news/:id', async (req, res) => {
-    const newsId = parseInt(req.params.id); // Mengonversi ID menjadi tipe data yang sesuai (biasanya integer)
-
-        // Menggunakan Prisma Client untuk menghapus data berdasarkan ID
-        const deletedNews = await prisma.news.delete({
-            where: {
-                id: newsId,
-            },
-        });
-    res.json({
-        message: `delete data news by id ${newsId} is successfully`,
-        data: {}
-    })
-})
 
 app.listen(port, () => {
     console.log(`example app listing on port http://localhost:${port}`);
