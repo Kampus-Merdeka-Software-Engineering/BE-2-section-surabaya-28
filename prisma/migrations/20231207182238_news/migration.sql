@@ -23,7 +23,7 @@ CREATE TABLE `News` (
 CREATE TABLE `Feedback` (
     `nama` VARCHAR(100) NOT NULL,
     `email` VARCHAR(100) NOT NULL,
-    `telepon` INTEGER NOT NULL,
+    `telepon` VARCHAR(13) NOT NULL,
     `masukan` VARCHAR(1600) NOT NULL,
 
     UNIQUE INDEX `Feedback_email_key`(`email`)
