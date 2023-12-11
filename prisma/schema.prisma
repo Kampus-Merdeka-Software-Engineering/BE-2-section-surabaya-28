@@ -24,6 +24,7 @@ model News {
     news_content String @db.VarChar(2500)
 }
 model Feedback {
+    feedback_id Int @id @default(autoincrement())
     nama String @db.VarChar(100)
     email String @db.VarChar(100) @unique
     telepon String @db.VarChar(20)
